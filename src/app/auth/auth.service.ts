@@ -47,6 +47,7 @@ export class AuthService {
       .pipe(
         tap((u: User) => {
           if (u) {
+            localStorage.setItem('token', u.token);
             this.subjLoggedIn$.next(true);
             this.subjUser$.next(u);
           }
