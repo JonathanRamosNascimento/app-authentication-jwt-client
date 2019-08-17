@@ -16,6 +16,8 @@ export class LoginComponent implements OnInit {
     'password': ['', [Validators.required, Validators.minLength(6)]],
   })
 
+  loading = false;
+
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
@@ -28,6 +30,7 @@ export class LoginComponent implements OnInit {
 
   onSubmit() {
     const credentials = this.loginForm.value;
+    this.loading = true;
     this.authService.login(credentials)
       .subscribe(
         (user) => {
@@ -37,12 +40,14 @@ export class LoginComponent implements OnInit {
             { duration: 2000 }
           );
           this.router.navigateByUrl('/');
+          this.loading = false;
         },
         (err) => {
           console.error(err);
           this.snackBar.open(
             'Login Error', 'OK', { duration: 2000 }
           );
+          this.loading = false;
         }
       )
   }
